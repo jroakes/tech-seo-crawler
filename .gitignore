@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Other
+apicache-py3/
+*.ctrl
+*.lwp

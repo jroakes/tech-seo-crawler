@@ -1,0 +1,7 @@
+mmh3
+nltk
+numpy
+pandas
+tqdm
+pyppeteer
+newspaper3k

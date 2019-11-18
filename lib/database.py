@@ -48,13 +48,19 @@ class HashLookup:
     def isEmpty(self):
         return self.df.empty()
     def add_hash(self, url, content):
-        self.df = self.df.append({'url':url, 'minhash':build_minhash(content)}, ignore_index=True)
-    def get_hash(self, domain, url):
-        return self.df[ self.df.url == url]['minhash']
-    def get_similar(self, content ):
+        self.df = self.df.append({'url':url, 'minhash':build_minhash(content).minhash}, ignore_index=True)
+    def get_hash(self, url):
+        hs = self.df[ self.df.url == url]['minhash']
+        return hs.item() if len(hs) else []
+    def get_similar(self, content, threshold=None ):
+        th = threshold or self.th
         mh = build_minhash(content)
-        matches = self.df.minhash.map(lambda x : mh.similarity(x) <= self.th)
-        self.df[matches]['url'].tolist()
-
+        matches = self.df.minhash.map(lambda x : mh.similarity(x) > th)
+        return self.df[matches]['url'].tolist()
+    def get_similarity_df(self, content):
+        mh = build_minhash(content)
+        df_sim = self.df.copy()
+        df_sim['sim'] = df_sim.minhash.map(lambda x : mh.similarity(x))
+        return df_sim[['url','sim']].sort_values(by='sim', ascending=False)
     def __len__(self):
         return len(self.df)

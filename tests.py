@@ -25,6 +25,7 @@
 
 from lib.robots import check_robots_txt
 from lib.shingling import build_shingles
+from lib.database import *
 from lib.renderer import *
 from lib.crawler import crawl_url
 
@@ -41,9 +42,23 @@ assert check_robots_txt('https://locomotive.agency/robots.txt', 'https://locomot
 # Shingling
 content_valid = "You know that you want your website to rank well, but where do you start? There is a gamut of optimization efforts that go much deeper than good content structure and using the right keywords. In fact, many of the most important ranking factors are much more technical and “behind the scenes”. At Locomotive, our technical team can uncover and resolve these elusive technical SEO issues, whereas other agencies can only begin to scratch the surface."
 content_not_valid = "nothing"
-domain, url = 'https://locomotive.agency', 'https://locomotive.agency/services/technical-seo/'
 assert build_minhash(content_valid, ngram_length=5, minhash_size=10).minhash == [-2087495345, -2133526056, -2107069758, -2122401432, -2111672224, -2007258663, -2128677349, -2141142084, -2055117892, -2142619357]
 assert build_minhash(content_not_valid, ngram_length=5, minhash_size=10).minhash == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+content1 = """Many packages don't create a build for every single release which forces your pip to build from source. If you're happy to use the latest pre-compiled binary version, use --only-binary :all: to allow pip to use an older binary version."""
+content2 = """Most packages don't create a build for every single release which forces your pip to build from source. If you're happy to use the latest pre-compiled binary version, use --only-binary :all: to allow pip to use an older binary version."""
+content3 = """The C++ Build Tools allow you to build C++ libraries and applications targeting Windows desktop. They are the same tools that you find in Visual Studio 2019, Visual Studio 2017, and Visual Studio 2015 in a scriptable standalone installer. Now you only need to download the MSVC compiler toolset you need to build C++ projects on your build servers."""
+
+hashdb = HashLookup()
+
+hashdb.add_hash('content1', content1)
+hashdb.add_hash('content2', content2)
+hashdb.add_hash('content3', content3)
+
+assert len(hashdb) == 3
+assert hashdb.get_hash('content1')[:5] == [-2145608475, -2092676559, -2100324990, -2106062289, -2101729913]
+assert hashdb.get_similar(content2, threshold=0.9) == ['content2']
+
 
 
 # rendering

@@ -60,9 +60,9 @@ class ShingledText:
                 min_value = min(min_value, value)
             self.minhash.append(min_value)
 
-    def similarity(self, other_shingled_text):
+    def similarity(self, other_minhash):
         return jaccard_similarity(set(self.minhash),
-                set(other_shingled_text.minhash))
+                set(other_minhash))
 
 
 def build_minhash(content, ngram_length=5, minhash_size=100):

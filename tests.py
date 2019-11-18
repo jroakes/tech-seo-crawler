@@ -61,11 +61,6 @@ assert info['meta']['robots'] == []
 assert info['meta']['canonical'] == 'http://example.com/'
 assert info['domain'] == 'example.com'
 assert info['title'] == 'Example Domain'
-print(info)
-
-
-site_data = build_sites()
-publish_sites(site_data)
 
 
 

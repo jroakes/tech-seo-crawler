@@ -22,21 +22,42 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# Crawler
+##################################################################################################################
+# Crawler Settings
+##################################################################################################################
+
+# Enter the User-Agent to crawl as.
 browser_user_agent = "Googlebot"
+
+# How quickly we crawl a website.
 per_sec_crawl_rate = 1
 
 
+##################################################################################################################
+# Site Generator Settings
+##################################################################################################################
 
-# Site Generator
+# the tool expects for a folder named `web` to exist.  This is the folder within where the website files are stored.
 sg_save_folder = 'files'
+
+# The username for your main Github Account.
 sg_gh_user = 'jroakes-locomotive'
+
+# Dictonary of your sites where `topic` is the name of the topic to search Wikipedia for, \
+# and org_name is the EXACT name of the Github Organizations you created.
 sg_sites = [
             {'topic': 'python software', 'org_name': 'python-software'},
             {'topic': 'data science', 'org_name': 'data-science-blog'},
             {'topic': 'search engine optimization', 'org_name': 'search-engine-optimization-blog'}
            ]
 
+
+
+
+
+
+
+# This should not be changed unless you know what you are doing.
 sg_page_template = '''---
 layout: post
 title:  {title}

@@ -25,16 +25,22 @@
 
 import pywikibot
 import os
+import sys
 import re
 import random
 import datetime
 from posixpath import join as urljoin
 import time
 
-import config as cfg
+try:
+    import config as cfg
+except:
+    sys.path.insert(1, os.path.join(sys.path[0], '..'))
+    import config as cfg
 
-from web.publish import Publish
-from lib.crawler import crawl_url
+    from web.publish import Publish
+    from lib.crawler import crawl_url
+
 
 
 
@@ -240,3 +246,22 @@ def publish_sites(site_data):
             print('\tUpdated File:', status, url)
 
         print()
+
+
+def main():
+    print("#"*80)
+    print("Site Generator")
+    print("#"*80)
+    print()
+
+    confirm = input("Have you updated the `Site Generator Settings` in config.py? ([Y]es or [N]o):")
+
+    if confirm.lower() == 'y':
+        site_data = build_sites()
+        publish_sites(site_data)
+    else:
+        print('Exiting.  Please do that prior to runnning.  See the README.md for details.')
+
+
+if __name__ == "__main__":
+    main()

@@ -24,10 +24,11 @@
 
 
 from lib.robots import check_robots_txt
-from lib.shingling import build_shingles
+from lib.shingling import build_minhash
 from lib.database import *
 from lib.renderer import *
 from lib.crawler import crawl_url
+from lib.bert import *
 
 from web.site_generator import build_site_data, build_sites, publish_sites
 from web.publish import Publish
@@ -42,6 +43,7 @@ assert check_robots_txt('https://locomotive.agency/robots.txt', 'https://locomot
 # Shingling
 content_valid = "You know that you want your website to rank well, but where do you start? There is a gamut of optimization efforts that go much deeper than good content structure and using the right keywords. In fact, many of the most important ranking factors are much more technical and “behind the scenes”. At Locomotive, our technical team can uncover and resolve these elusive technical SEO issues, whereas other agencies can only begin to scratch the surface."
 content_not_valid = "nothing"
+
 assert build_minhash(content_valid, ngram_length=5, minhash_size=10).minhash == [-2087495345, -2133526056, -2107069758, -2122401432, -2111672224, -2007258663, -2128677349, -2141142084, -2055117892, -2142619357]
 assert build_minhash(content_not_valid, ngram_length=5, minhash_size=10).minhash == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -78,5 +80,21 @@ assert info['domain'] == 'example.com'
 assert info['title'] == 'Example Domain'
 
 
+# Bert
+
+ngrams = ['this is a dog', 'that is a cat', 'this is a pig on a roller coaster', 'this is a girl in a blanket', 'this book has no pages', 'this happens at christmas']
+
+queries = ['santa claus', 'ebook reader', 'cozy and warm']
+correct = ['this happens at christmas', 'this book has no pages', 'this is a girl in a blanket']
+
+bert = BERT()
+
+bert.add_terms(ngrams)
+
+for i,t in enumerate(queries):
+    best, sim = bert.get_most_similar(t)
+    print(t,best,sim)
+
+    assert best == correct[i]
 
 print('All Tests Passed')

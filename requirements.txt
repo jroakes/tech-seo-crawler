@@ -4,5 +4,8 @@ numpy
 pandas
 tqdm
 pyppeteer
-newspaper3k
+goose3
 gensim
+transformers
+torch
+pattern

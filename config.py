@@ -33,6 +33,24 @@ browser_user_agent = "Googlebot"
 per_sec_crawl_rate = 1
 
 
+
+##################################################################################################################
+# BERT settings
+##################################################################################################################
+
+# Models Available:
+# * bert-base-uncased
+# * bert-large-uncased
+# * bert-base-cased
+# * bert-large-cased
+# * distilbert-base-uncased
+
+# Enter the User-Agent to crawl as.
+transformer_model = "distilbert-base-uncased"
+embedding_size = 100
+
+
+
 ##################################################################################################################
 # Site Generator Settings
 ##################################################################################################################

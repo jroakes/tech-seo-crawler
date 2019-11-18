@@ -13,6 +13,6 @@
 * https://medium.com/startup-grind/what-every-software-engineer-should-know-about-search-27d1df99f80d
 * http://web.stanford.edu/class/cs276/
 * https://github.com/wuyi1405/brianspiering-nlp-course
-*
+* https://www.cs.toronto.edu/~muuo/blog/build-yourself-a-mini-search-engine/
 *
 *

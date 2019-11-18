@@ -23,38 +23,18 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import pandas
+from collections import deque
 
-
-class Frontier:
-
+class FrontierQueue:
     def __init__(self):
-        self.db = pd.DataFrame(columns=['domain','url',])
-
-    def add_url(self, domain, url, priority):
-        self.db.append({'domain':domain, 'url': url.strip(), 'priority': priority, 'crawled':False}, ignore_index=True)
-
-    def get_new(self, domain):
-        return self.db[(self.db.crawled == False & self.db.domain == domain)]['url'].tolist()
-
-    def mark_crawled(self, domain, url):
-        self.db[(self.db.domain == domain & self.db.url == url)]['crawled'] = True
-
-
-
-
-class search_index:
-
-    def __init__(self):
-        self.db = pd.DataFrame(columns=['domain', 'url', 'title', 'description'])
-
-    def add_url(self, domain, url, title, description):
-        if self.url_exists(domain, url):
-            self.update_existing(domain, url, title, description)
-        else:
-            self.db.append({'domain':domain, 'url': url 'title': title, 'description':description}, ignore_index=True)
-
-    def url_exists(self, domain, url):
-        return self.db[(self.db.domain == domain & self.db.url == url)].empty() == False
-
-    def update_existing(self, domain, url, title, description):
-        self.db.loc[(self.db.domain == domain & self.db.url == url), ['title', 'description']] = title, description
+        self.items = deque()
+    def isEmpty(self):
+        return not bool(self.items)
+    def enqueue(self,item):
+        # Add to end
+        self.items.append(item)
+    def dequeue(self):
+        # Pull from beginning
+        return self.items.popleft()
+    def size(self):
+        return len(self.items)

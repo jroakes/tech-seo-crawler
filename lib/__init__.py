@@ -25,4 +25,4 @@
 
 #from crawler import *
 from .robots import check_robots_txt
-from .shingling import build_shingles
+from .shingling import build_minhash, jaccard_similarity

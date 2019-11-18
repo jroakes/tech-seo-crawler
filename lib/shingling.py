@@ -68,6 +68,6 @@ class ShingledText:
 def build_minhash(content, ngram_length=5, minhash_size=100):
 
     if isinstance(content, str) and len(content.split()) > ngram_length:
-        return ShingledText(content, shingle_length=ngram_length, minhash_size=minhash_size).minhash
+        return ShingledText(content, shingle_length=ngram_length, minhash_size=minhash_size)
     else:
         return np.zeros(minhash_size, dtype=np.int8).tolist()

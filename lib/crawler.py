@@ -53,7 +53,6 @@ class RobotsExtractor(BaseExtractor):
         return robots
 
 
-
 def crawl_url(url):
     g = Goose({'browser_user_agent': cfg.browser_user_agent, 'parser_class':'soup'})
     page = g.extract(url=url)

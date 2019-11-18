@@ -22,8 +22,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import pandas
+import pandas as pd
 from collections import deque
+from lib import *
 
 class FrontierQueue:
     def __init__(self):
@@ -38,3 +39,22 @@ class FrontierQueue:
         return self.items.popleft()
     def size(self):
         return len(self.items)
+
+
+class HashLookup:
+    def __init__(self, threshold=0.8):
+        self.df = pd.DataFrame(columns=['url','minhash'])
+        self.th = threshold
+    def isEmpty(self):
+        return self.df.empty()
+    def add_hash(self, url, content):
+        self.df = self.df.append({'url':url, 'minhash':build_minhash(content)}, ignore_index=True)
+    def get_hash(self, domain, url):
+        return self.df[ self.df.url == url]['minhash']
+    def get_similar(self, content ):
+        mh = build_minhash(content)
+        matches = self.df.minhash.map(lambda x : mh.similarity(x) <= self.th)
+        self.df[matches]['url'].tolist()
+
+    def __len__(self):
+        return len(self.df)

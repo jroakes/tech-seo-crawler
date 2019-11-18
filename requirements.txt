@@ -5,3 +5,4 @@ pandas
 tqdm
 pyppeteer
 newspaper3k
+gensim

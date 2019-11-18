@@ -42,8 +42,8 @@ assert check_robots_txt('https://locomotive.agency/robots.txt', 'https://locomot
 content_valid = "You know that you want your website to rank well, but where do you start? There is a gamut of optimization efforts that go much deeper than good content structure and using the right keywords. In fact, many of the most important ranking factors are much more technical and “behind the scenes”. At Locomotive, our technical team can uncover and resolve these elusive technical SEO issues, whereas other agencies can only begin to scratch the surface."
 content_not_valid = "nothing"
 domain, url = 'https://locomotive.agency', 'https://locomotive.agency/services/technical-seo/'
-assert build_minhash(content_valid, ngram_length=5, minhash_size=10) == [-2087495345, -2133526056, -2107069758, -2122401432, -2111672224, -2007258663, -2128677349, -2141142084, -2055117892, -2142619357]
-assert build_minhash(content_not_valid, ngram_length=5, minhash_size=10) == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+assert build_minhash(content_valid, ngram_length=5, minhash_size=10).minhash == [-2087495345, -2133526056, -2107069758, -2122401432, -2111672224, -2007258663, -2128677349, -2141142084, -2055117892, -2142619357]
+assert build_minhash(content_not_valid, ngram_length=5, minhash_size=10).minhash == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
 # rendering

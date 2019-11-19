@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 # coding: utf-8
 #
 # Copyright (c) 2019 JR Oakes
@@ -23,8 +23,41 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#from crawler import *
-from .robots import check_robots_txt
-from .shingling import build_minhash, jaccard_similarity
-from .bert import BERT
-from .pagerank import build_pagerank_df
+import networkx as nx
+import pandas as pd
+import numpy as np
+import re
+from tqdm import tqdm
+from urllib.parse import urlparse
+
+
+def build_pagerank_df(url_list, link_tuples):
+
+    pr_graph = run_graphs(url_list, link_tuples)
+
+    # Calculate scores
+    scores_pr = nx.pagerank(pr_graph, max_iter=1000)
+
+    # Sort scores
+    ranked_nodes_pr = sorted(((scores_pr[s],s) for i,s in enumerate(list(scores_pr.keys()))), reverse=True)
+
+    data = [{'url':u, 'score':s} for s, u in ranked_nodes_pr]
+
+    return pd.DataFrame(data)
+
+
+
+def run_graphs(addresses, links):
+
+    '''
+    addresses: List of strings.
+    links: List of tuples as (source, destimation) pairs.
+    '''
+
+    G = nx.DiGraph()
+
+    G.add_nodes_from(addresses)
+    G.add_edges_from(links)
+
+
+    return G

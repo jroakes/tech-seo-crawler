@@ -9,3 +9,4 @@ gensim
 transformers
 pattern
 reppy
+networkx

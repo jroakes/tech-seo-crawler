@@ -37,14 +37,20 @@ class BERT:
         if 'distilbert' in cfg.transformer_model:
             self.model      = DistilBertModel.from_pretrained(cfg.transformer_model)
             self.tokenizer  = DistilBertTokenizer.from_pretrained(cfg.transformer_model)
+            self.model_dims = self.model.config.dim
         else:
             self.model      = BertModel.from_pretrained(cfg.transformer_model)
             self.tokenizer  = BertTokenizer.from_pretrained(cfg.transformer_model)
+            self.model_dims = self.model.config.hidden_size
+
+        # Make sure model is in Eval mode.
+        self.model.eval()
 
         self.terms          = []
         self.embeddings     = torch.FloatTensor([])
-        self.embed          = nn.Linear(self.model.config.dim, dims) if dims else None
-        self.sim_fn         = torch.nn.CosineSimilarity(dim=1)
+        self.reduce         = nn.Linear(self.model_dims, dims) if dims else None
+        self.activation     = nn.Tanh()
+        self.sim_fn         = torch.nn.CosineSimilarity(dim=-1, eps=1e-6)
 
 
 
@@ -53,19 +59,19 @@ class BERT:
             if t not in self.terms:
                 emb   = self.get_embedding(t)
                 self.terms.append(t)
-                self.embeddings = torch.cat((self.embeddings, emb.unsqueeze(0)), dim=0)
+                self.embeddings = torch.cat((self.embeddings, emb), dim=0)
 
 
     def get_embedding(self, text):
+
         with torch.no_grad():
             input_ids = torch.LongTensor(self.tokenizer.encode(text)).unsqueeze(0)
-            outputs = self.model(input_ids)
-            lh = outputs[0].squeeze()
-            if self.embed is not None:
-                lh = self.embed(lh)
-            emb = torch.sum(lh, dim=0)
+            lh  = self.model(input_ids)[0]
+            emb = torch.mean(lh, dim=1)
+            if self.reduce is not None:
+                emb = self.reduce(emb)
 
-        return emb
+        return self.activation(emb)
 
 
     def get_most_similar(self, term):

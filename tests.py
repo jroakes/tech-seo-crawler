@@ -81,20 +81,14 @@ assert info['title'] == 'Example Domain'
 
 
 # Bert
+queries = ['trim a chrismas tree', 'jog on a path', 'kindle ebook', 'italian restaurant', 'internet landing page']
+ngrams = ['decorate a tree', 'run on a road', 'electric book', 'cafe in italy', 'website homepage']
 
-ngrams = ['this is a dog', 'that is a cat', 'this is a pig on a roller coaster', 'this is a girl in a blanket', 'this book has no pages', 'this happens at christmas']
-
-queries = ['santa claus', 'ebook reader', 'cozy and warm']
-correct = ['this happens at christmas', 'this book has no pages', 'this is a girl in a blanket']
-
-bert = BERT()
-
+bert = BERT(dims=None)
 bert.add_terms(ngrams)
 
 for i,t in enumerate(queries):
     best, sim = bert.get_most_similar(t)
-    print(t,best,sim)
-
-    assert best == correct[i]
+    assert best == ngrams[i]
 
 print('All Tests Passed')

@@ -7,5 +7,5 @@ pyppeteer
 goose3
 gensim
 transformers
-torch
 pattern
+reppy

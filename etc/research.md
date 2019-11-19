@@ -15,4 +15,4 @@
 * https://github.com/wuyi1405/brianspiering-nlp-course
 * https://www.cs.toronto.edu/~muuo/blog/build-yourself-a-mini-search-engine/
 *
-*
+* `conda create --name techseo python=3.7`

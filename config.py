@@ -46,7 +46,7 @@ per_sec_crawl_rate = 1
 # * distilbert-base-uncased
 
 # Enter the User-Agent to crawl as.
-transformer_model = "distilbert-base-uncased"
+transformer_model = "bert-base-uncased"
 embedding_size = 100
 
 

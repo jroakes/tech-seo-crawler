@@ -37,8 +37,27 @@ class FrontierQueue:
     def dequeue(self):
         # Pull from beginning
         return self.items.popleft()
-    def size(self):
+    def __len__(self):
         return len(self.items)
+
+
+class LinkGraph:
+    def __init__(self):
+        self.nodes = []
+        self.edges = []
+    def isEmpty(self):
+        return not bool(self.nodes) and not bool(self.edges)
+    def add_node(self,node):
+        if node not in self.nodes:
+            self.nodes.append(node)
+    def add_edge(self, origin, destination):
+        add_node(origin)
+        add_node(destination)
+        self.edges.append((origin, destination))
+    def get_data(self):
+        return self.nodes, self.edges
+    def __len__(self):
+        return len(self.nodes)
 
 
 class HashLookup:

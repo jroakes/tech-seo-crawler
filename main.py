@@ -23,3 +23,18 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import lib
+
+
+def crawler(seed):
+
+    frontier  = lib.FrontierQueue()
+    linggraph = lib.LinkGraph()
+    hashtable = lib.HashLookup()
+
+    frontier.enqueue(seed)
+
+    while len(frontier):
+
+        next = frontier.dequeue()
+
+        next_data = lib.crawl_url(next)

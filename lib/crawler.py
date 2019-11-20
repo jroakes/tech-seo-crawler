@@ -48,19 +48,24 @@ class RobotsExtractor(BaseExtractor):
         items = self.parser.getElementsByTag(self.article.doc[0], **kwargs)
         for i in items:
             attr = self.parser.getAttribute(i, 'content')
-            if attr:
-                robots.append(attr)
+            if attr and len(attr):
+                attr = [a.strip().lower() for a in attr.split(',')]
+                robots.extend(attr)
         return robots
+
 
 
 def crawl_url(url):
     g = Goose({'browser_user_agent': cfg.browser_user_agent, 'parser_class':'soup'})
-    page = g.extract(url=url)
+    r = g.fetcher.fetch_obj(url)
+    page = g.extract(raw_html=r.text)
     infos = page.infos
 
     infos['final_url']       = page.final_url
+    infos['status']          = r.status_code
+    infos['headers']         = r.headers
     infos['link_hash']       = page.link_hash
-
+    infos['final_url']       = r.url
     infos['links']          = LinksExtractor(g.config, page).extract()
     infos['meta']['robots'] = RobotsExtractor(g.config, page).extract()
     infos['content']        = ' '.join(page.cleaned_text.split())

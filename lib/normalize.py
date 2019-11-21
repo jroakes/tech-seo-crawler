@@ -142,7 +142,7 @@ def normalize_corpus(corpus, lemmatize=True,
 
     normalized_corpus = []
     for text in corpus:
-        text = normalize_accented_characters(text)
+
         text = html_parser.unescape(text)
         text = expand_contractions(text, CONTRACTION_MAP)
         if lemmatize:

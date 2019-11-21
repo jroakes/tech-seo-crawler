@@ -128,3 +128,9 @@ class RenderHTML():
         await self.page.evaluate("document.querySelectorAll('script, iframe, style, noscript, link').forEach(function(el){el.remove()})", force_expr=True)
         content = await self.page.evaluate("document.body.textContent", force_expr=True)
         return ' '.join(content.split())
+
+
+
+def render_html(html):
+    renderer = RenderHTML(html=html)
+    return renderer.render()

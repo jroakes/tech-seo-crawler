@@ -25,27 +25,32 @@
 
 from goose3 import Goose
 from goose3.extractors import BaseExtractor
+from lib.utils import *
 
 import config as cfg
 
 
+
 class LinksExtractor(BaseExtractor):
 
-    def extract(self):
+    def extract(self, url):
         links = []
-        items = self.parser.getElementsByTag(self.article.doc[0], 'a')
+        items = self.parser.getElementsByTag(self.article._raw_doc, 'a')
+
         for i in items:
-            attr = {'href': self.parser.getAttribute(i, 'href'), 'text': self.parser.getText(i), 'rel': self.parser.getAttribute(i, 'rel')}
+            href = get_canonical_url(self.parser.getAttribute(i, 'href'), url)
+            attr = {'href': href, 'text': self.parser.getText(i) or '', 'rel': self.parser.getAttribute(i, 'rel') or ''}
             if attr:
                 links.append(attr)
         return links
+
 
 class RobotsExtractor(BaseExtractor):
 
     def extract(self):
         robots = []
         kwargs = {'tag': 'meta', 'attr': 'name', 'value': 'robots'}
-        items = self.parser.getElementsByTag(self.article.doc[0], **kwargs)
+        items = self.parser.getElementsByTag(self.article._raw_doc, **kwargs)
         for i in items:
             attr = self.parser.getAttribute(i, 'content')
             if attr and len(attr):
@@ -58,7 +63,8 @@ class RobotsExtractor(BaseExtractor):
 def crawl_url(url):
     g = Goose({'browser_user_agent': cfg.browser_user_agent, 'parser_class':'soup'})
     r = g.fetcher.fetch_obj(url)
-    page = g.extract(raw_html=r.text)
+    html = r.content.decode('utf-8').strip()
+    page = g.extract(raw_html=html)
     infos = page.infos
 
     infos['final_url']       = page.final_url
@@ -66,8 +72,9 @@ def crawl_url(url):
     infos['headers']         = r.headers
     infos['link_hash']       = page.link_hash
     infos['final_url']       = r.url
-    infos['links']          = LinksExtractor(g.config, page).extract()
-    infos['meta']['robots'] = RobotsExtractor(g.config, page).extract()
-    infos['content']        = ' '.join(page.cleaned_text.split())
-    infos['html']           = ' '.join(page.raw_html.split())
+    infos['domain']          = get_hostname(r.url)
+    infos['links']           = LinksExtractor(g.config, page).extract(url)
+    infos['meta']['robots']  = RobotsExtractor(g.config, page).extract()
+    infos['content']         = ' '.join(page.cleaned_text.split())
+    infos['html']            = ' '.join(page.raw_html.split())
     return infos

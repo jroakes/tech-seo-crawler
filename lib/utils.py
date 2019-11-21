@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 # coding: utf-8
 #
 # Copyright (c) 2019 JR Oakes
@@ -22,13 +22,33 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from urllib.parse import urlparse, urljoin
+import hashlib
 
-#from crawler import *
-from .robots import check_robots_txt
-from .shingling import build_minhash, jaccard_similarity
-from .bert import BERT
-from .pagerank import build_pagerank_df
-from .data import FrontierQueue, HashLookup, LinkGraph
-from .crawler import crawl_url
-from .renderer import render_html
-from .utils import *
+import config as cfg
+
+
+def get_canonical_url(href, current_url):
+
+    if href:
+        href = href.strip()
+        o = urlparse(href)
+        if not o.hostname:
+            tmp = urlparse(current_url)
+            domain = '%s://%s' % (tmp.scheme, tmp.hostname)
+            href = urljoin(domain, href)
+        return href
+    return None
+
+
+def get_hostname(url):
+    url = url.strip()
+    o = urlparse(url)
+    return o.hostname
+
+
+
+def url_hash(url):
+    if isinstance(url, str):
+        url = url.encode('utf-8')
+    return hashlib.md5(raw_html).hexdigest()

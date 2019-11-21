@@ -33,7 +33,10 @@ class FrontierQueue:
         return not bool(self.items)
     def enqueue(self,item):
         # Add to end
-        self.items.append(item)
+        if isinstance(item, list):
+            _ = [self.items.append(i) for i in item]
+        else:
+            self.items.append(item)
     def dequeue(self):
         # Pull from beginning
         return self.items.popleft()
@@ -51,8 +54,8 @@ class LinkGraph:
         if node not in self.nodes:
             self.nodes.append(node)
     def add_edge(self, origin, destination):
-        add_node(origin)
-        add_node(destination)
+        self.add_node(origin)
+        self.add_node(destination)
         self.edges.append((origin, destination))
     def get_data(self):
         return self.nodes, self.edges

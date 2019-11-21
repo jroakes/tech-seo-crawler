@@ -51,4 +51,4 @@ def get_hostname(url):
 def url_hash(url):
     if isinstance(url, str):
         url = url.encode('utf-8')
-    return hashlib.md5(raw_html).hexdigest()
+    return hashlib.md5(url).hexdigest()

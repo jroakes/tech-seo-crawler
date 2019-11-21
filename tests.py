@@ -63,7 +63,6 @@ assert hashdb.get_hash('content1')[:5] == [-2145608475, -2092676559, -2100324990
 assert hashdb.get_similar(content2, threshold=0.9) == ['content2']
 
 
-
 # rendering
 with open("files/demo.html", "r") as f:
     html = f.read()
@@ -93,10 +92,10 @@ for i,t in enumerate(queries):
     assert best == ngrams[i]
 
 
-
 # PageRank
 url_list = ['urla', 'urlb', 'urlc', 'urld', 'urle']
 link_tuples = [('urla','urlb'), ('urlc','urlb'), ('urla','urle'), ('urle','urla'), ('urlc','urlb'), ('urld','urle'), ('urle','urlb')]
+
 pr_valid = {'url': {0: 'urlb', 1: 'urle', 2: 'urla', 3: 'urld', 4: 'urlc'}, 'score': {0: 0.3625498007448575, 1: 0.2544205750109898, 2: 0.19976269190396267, 3: 0.09163346617009499, 4: 0.09163346617009499}}
 df = build_pagerank_df(url_list, link_tuples)
 assert df.to_dict() == pr_valid

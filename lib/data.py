@@ -63,6 +63,47 @@ class LinkGraph:
         return len(self.nodes)
 
 
+class LinkGraph:
+    def __init__(self):
+        self.nodes = []
+        self.edges = []
+    def isEmpty(self):
+        return not bool(self.nodes) and not bool(self.edges)
+    def add_node(self,node):
+        if node not in self.nodes:
+            self.nodes.append(node)
+    def add_edge(self, origin, destination):
+        self.add_node(origin)
+        self.add_node(destination)
+        self.edges.append((origin, destination))
+    def get_data(self):
+        return self.nodes, self.edges
+    def __len__(self):
+        return len(self.nodes)
+
+
+class URLLookup:
+    def __init__(self, threshold=0.8):
+        self.df = pd.DataFrame(columns=['url_hash','url_str','url_canonical']).set_index('url_hash')
+    def isEmpty(self):
+        return self.df.empty()
+    def add_hashed(self, url_str, url_canonical=""):
+        hs = url_hash(url_str)
+        self.df.loc[hs] = {'url_str':url_str, 'url_canonical': url_canonical}
+        return hs
+    def get_hash(self, url_str):
+        hs = self.df[self.df.url_str == url_str].index
+        return hs.item() if len(hs) else None
+    def get_url(self, url_hash):
+        hs = self.df.loc[url_hash]['url_str']
+        return hs or None
+    def get_canonical(self, url_hash):
+        hs = self.df.loc[url_hash]['url_canonical']
+        return hs or None
+    def __len__(self):
+        return len(self.df)
+
+
 class HashLookup:
     def __init__(self, threshold=0.8):
         self.df = pd.DataFrame(columns=['url','minhash'])

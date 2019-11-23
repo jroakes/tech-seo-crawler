@@ -33,18 +33,18 @@ class Crawler():
         self.frontier  = lib.FrontierQueue()
         self.hashtable = lib.HashLookup()
         self.linkgraph = lib.LinkGraph()
+        self.urllookup = lib.URLLookup()
 
         self.known_urls   = set()
         self.crawled_urls = set()
 
         self.doc_index  = pd.DataFrame()
-        self.term_index = pd.DataFrame()
-        self.link_index = pd.DataFrame()
         self.link_text  = {}
 
 
 
     def parse_links(self, links, current_url):
+
         self.known_urls.update([l['href'] for l in links])
 
         valid_urls = set()
@@ -90,8 +90,8 @@ class Crawler():
             nxt_data = lib.crawl_url(nxt)
 
             d = ['domain', 'cleaned_text', 'title', 'final_url']
-            doc_data = {'domain':nxt_data['']
-                        'url':
+            doc_data = {'domain':nxt_data[''],
+                        'url': next
                         }
 
             if nxt_data:
@@ -119,3 +119,12 @@ class Crawler():
                 if len(nxt_data['links']):
                     valid_urls = self.parse_links(nxt_data['links'], nxt)
                     self.frontier.enqueue(valid_urls)
+
+
+
+class Indexer():
+
+    def __init__(self, crawl_data):
+
+        self.term_index = pd.DataFrame()
+        self.link_index = pd.DataFrame()

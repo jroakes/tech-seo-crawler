@@ -32,6 +32,29 @@ browser_user_agent = "Googlebot"
 # How quickly we crawl a website.
 per_sec_crawl_rate = 1
 
+# Where to start crawling
+crawler_seed = 'https://data-science-blog.github.io/Customer-Data-Platform/'
+
+# term_frequency type `bm25` or `tfidf`
+i_type="bm25"
+
+# repeats the title in the corpus for a page this many times
+title_boost = 3
+
+
+##################################################################################################################
+# Search settings
+##################################################################################################################
+
+# Weight of term similarity (0=none, 1=full) float
+sim_weight = 0.7
+
+# Weight of PageRank (0=none, 1=full) float
+pr_weight  = 0.7
+
+# Weight of BERT (0=none, 1=full) float
+bert_weight = 0.7
+
 
 
 ##################################################################################################################
@@ -46,7 +69,7 @@ per_sec_crawl_rate = 1
 # * distilbert-base-uncased
 
 # Enter the User-Agent to crawl as.
-transformer_model = "bert-base-uncased"
+transformer_model = "distilbert-base-uncased"
 embedding_size = 100
 
 

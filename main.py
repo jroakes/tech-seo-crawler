@@ -22,109 +22,78 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import lib
-import pandas as pd
+from engine import *
+
+import streamlit as st
+import copy
+
+import config as cfg
+
+@st.cache(persist=True, suppress_st_warning=True)
+def crawl_data(seed):
+    crawler = Crawler()
+    crawler.crawl(seed)
+    return crawler
+
+@st.cache(persist=True, suppress_st_warning=True)
+def render_data(crawler):
+    newcrawler = copy.deepcopy(crawler)
+    newcrawler.render()
+    return newcrawler
+
+@st.cache(persist=True, suppress_st_warning=True)
+def index_data(crawler, i_type, title_boost):
+    indexer = Indexer(crawler)
+    indexer.build_index(i_type=i_type, title_boost=title_boost)
+    indexer.build_bert_embeddings_st()
+    return indexer
 
 
-class Crawler():
+def main():
 
-    def __init__(self, config=None):
+    st.title('Crawling and Rendering in Python')
 
-        self.frontier  = lib.FrontierQueue()
-        self.hashtable = lib.HashLookup()
-        self.linkgraph = lib.LinkGraph()
-        self.urllookup = lib.URLLookup()
+    st.sidebar.markdown('## Indexing Options')
+    i_type       = st.sidebar.radio('Term Frequency type?',('bm25', 'tfidf'))
+    title_boost  = st.sidebar.slider('How much of a boost to give titles?', 1, 5, 2, 1)
 
-        self.known_urls   = set()
-        self.crawled_urls = set()
-
-        self.doc_index  = pd.DataFrame()
-        self.link_text  = {}
-
+    st.sidebar.markdown('## Search Options')
+    search_query    = st.sidebar.text_input('Search Query', '')
+    sim_weight      = st.sidebar.slider('How much weight to give to term similarity?', 0.0, 1.0, 0.5, 0.1)
+    pr_weight       =  st.sidebar.slider('How much weight to give to PageRank?', 0.0, 1.0, 0.5, 0.1)
+    bert_weight     = st.sidebar.slider('How much weight to give to bert?', 0.0, 1.0, 0.5, 0.1)
 
 
-    def parse_links(self, links, current_url):
+    st.markdown('## Crawling')
+    # Crawling (First Wave)
+    crawler = crawl_data(cfg.crawler_seed)
+    st.markdown('Crawling Complete')
 
-        self.known_urls.update([l['href'] for l in links])
+    st.markdown('## Rendering')
+    # Rendering (Second Wave)
+    crawler = render_data(crawler)
+    st.markdown('Rendering Complete')
 
-        valid_urls = set()
+    st.markdown('## Indexing')
+    # Build the index
+    indexer = index_data(crawler, i_type, title_boost)
+    st.markdown('Indexing Complete')
 
-        for link in links:
+    st.markdown('## Searching: {}'.format(search_query))
 
-            text = str(link['text']).strip()
-            rel  = str(link['rel']).strip()
-            href = str(link['href']).strip().split('#')[0]
-
-            # Ignore nofollow
-            if rel.lower() == 'nofollow':
-                continue
-
-            # Anchor text
-            if len(text) and len(href):
-                if href in self.link_text:
-                    self.link_text[href] += [text]
-                else:
-                    self.link_text[href] = [text]
-
-            self.linkgraph.add_edge(current_url, href)
-
-            if href in self.crawled_urls or href in self.frontier.items:
-                continue
-
-            valid_urls.add(href)
-
-        return list(valid_urls)
-
+    if len(search_query):
+        data = {'sim_weight':sim_weight, 'pr_weight':pr_weight, 'bert_weight':bert_weight}
+        df, doc_matches, pr_matches, bert_matches = indexer.search_index(search_query, **data)
+        st.markdown('### Document Similarity Matches')
+        st.dataframe(doc_matches)
+        st.markdown('### By PageRank')
+        st.dataframe(pr_matches)
+        st.markdown('### Bert Matches')
+        st.dataframe(bert_matches)
+        st.markdown('### Search Results')
+        st.dataframe(df)
+    else:
+        st.markdown('You need to enter a search term.')
 
 
-    def crawl(self, seed):
-
-        self.frontier.enqueue(seed)
-
-        while len(self.frontier):
-
-            # Pull off next url
-            nxt = self.frontier.dequeue()
-            print("Crawling: {}".format(nxt))
-
-            nxt_data = lib.crawl_url(nxt)
-
-            d = ['domain', 'cleaned_text', 'title', 'final_url']
-            doc_data = {'domain':nxt_data[''],
-                        'url': next
-                        }
-
-            if nxt_data:
-                self.doc_index = self.doc_index.append(nxt_data, ignore_index=True)
-                self.crawled_urls.add(nxt)
-
-                if len(nxt_data['links']):
-                    valid_urls = self.parse_links(nxt_data['links'], nxt)
-                    self.frontier.enqueue(valid_urls)
-
-
-
-    def render(self):
-
-        for url in self.crawled_urls:
-
-            print("Rendering: {}".format(nxt))
-
-            nxt_data = lib.render_html(nxt)
-
-            if nxt_data:
-                self.doc_index = self.doc_index.append(nxt_data, ignore_index=True)
-                self.crawled_urls.add(nxt)
-
-                if len(nxt_data['links']):
-                    valid_urls = self.parse_links(nxt_data['links'], nxt)
-                    self.frontier.enqueue(valid_urls)
-
-
-
-class Indexer():
-
-    def __init__(self, crawl_data):
-
-        self.term_index = pd.DataFrame()
-        self.link_index = pd.DataFrame()
+main()

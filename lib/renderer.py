@@ -51,6 +51,9 @@ asyncio.get_event_loop().run_until_complete(main())
 '''
 
 import asyncio
+import threading
+import nest_asyncio
+nest_asyncio.apply()
 from pyppeteer import launch
 
 
@@ -66,6 +69,8 @@ class RenderHTML():
 
         self.html = ""
 
+        asyncio.set_event_loop(asyncio.new_event_loop())
+
         self.set_html(html)
         asyncio.get_event_loop().run_until_complete(self.build_page())
 
@@ -79,7 +84,11 @@ class RenderHTML():
             raise HTMLMissing('html is not set. Please run class.set_html(html) or pass the named `html` parameter to this function. ')
 
     async def build_page(self):
-        browser = await launch()
+        browser = await launch(
+                                handleSIGINT=False,
+                                handleSIGTERM=False,
+                                handleSIGHUP=False
+                               )
         context = await browser.createIncognitoBrowserContext()
         self.page = await browser.newPage()
 
@@ -115,12 +124,7 @@ class RenderHTML():
 
     async def _extract_links(self, html):
         await self.page.setContent(html)
-        links = await self.page.evaluate("() => [...document.querySelectorAll('a')].map( a => {return a.href;})")
-        return links
-
-    async def _extract_links(self, html):
-        await self.page.setContent(html)
-        links = await self.page.evaluate("() => [...document.querySelectorAll('a')].map( a => {return a.href;})")
+        links = await self.page.evaluate("() => [...document.querySelectorAll('a')].map( a => {return  {'href': a.href, 'text': a.textContent, 'rel':a.rel};})")
         return links
 
     async def _extract_content(self, html):

@@ -28,7 +28,8 @@ from .robots import check_robots_txt
 from .shingling import build_minhash, jaccard_similarity
 from .bert import BERT
 from .pagerank import build_pagerank_df
-from .data import FrontierQueue, HashLookup, LinkGraph
+from .data import FrontierQueue, HashLookup, LinkGraph, URLLookup
+from .doc_frequency import *
 from .crawler import crawl_url
-from .renderer import render_html
+from .renderer import RenderHTML, render_html
 from .utils import *

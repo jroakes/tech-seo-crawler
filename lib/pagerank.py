@@ -41,9 +41,9 @@ def build_pagerank_df(url_list, link_tuples):
     # Sort scores
     ranked_nodes_pr = sorted(((scores_pr[s],s) for i,s in enumerate(list(scores_pr.keys()))), reverse=True)
 
-    data = [{'url':u, 'score':s} for s, u in ranked_nodes_pr]
+    data = [{'urlhash':u, 'score':s} for s, u in ranked_nodes_pr]
 
-    return pd.DataFrame(data)
+    return pd.DataFrame(data).set_index('urlhash')
 
 
 

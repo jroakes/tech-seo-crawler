@@ -26,6 +26,7 @@ import config as cfg
 
 import torch
 import pandas as pd
+from tqdm import tqdm
 from torch import nn
 import transformers
 from transformers import BertTokenizer, BertModel, DistilBertTokenizer, DistilBertModel
@@ -55,11 +56,16 @@ class BERT:
 
 
     def add_terms(self, texts):
+        
         for t in texts:
-            if t not in self.terms:
-                emb   = self.get_embedding(t)
-                self.terms.append(t)
-                self.embeddings = torch.cat((self.embeddings, emb), dim=0)
+            add_term(t)
+
+
+    def add_term(self, text):
+        if text not in self.terms:
+            emb   = self.get_embedding(text)
+            self.terms.append(text)
+            self.embeddings = torch.cat((self.embeddings, emb), dim=0)
 
 
     def get_embedding(self, text):

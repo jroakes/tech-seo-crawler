@@ -47,6 +47,11 @@ def get_hostname(url):
     return o.hostname
 
 
+def get_robots(url):
+    tmp = urlparse(url)
+    domain = '%s://%s' % (tmp.scheme, tmp.hostname)
+    href = urljoin(domain, '/robots.txt')
+    return href
 
 def url_hash(url):
     if isinstance(url, str):

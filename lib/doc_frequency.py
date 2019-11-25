@@ -24,26 +24,79 @@
 
 import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+
+from sklearn.feature_extraction.text import TfidfVectorizer
 from lib.normalize import normalize_corpus
 
+import gensim
+from gensim.summarization.bm25 import get_bm25_weights
+
+import config as cfg
 
 
-def get_tfidf(items, **data):
 
-    ngram_range = data.get('ngram_range',(2, 5))
-    min_df = data.get('min_df',3)
-    top_n = data.get('top_n', 10)
+def get_tfidf(docs, doc_index):
 
-    items = normalize_corpus(items)
-    vectorizer = TfidfVectorizer(ngram_range=ngram_range, min_df = min_df)
+    docs_norm = normalize_corpus(docs, lemmatize=False,
+                     only_text_chars=True,
+                     tokenize=False, sort_text=False)
 
-    tvec_weights = vectorizer.fit_transform(items)
+    vectorizer = TfidfVectorizer()
+    weights = vectorizer.fit_transform(docs_norm).transpose().toarray()
+    terms = vectorizer.get_feature_names()
 
-    weights = np.asarray(tvec_weights.mean(axis=0)).ravel().tolist()
+    inv_idx = pd.DataFrame(weights, index=terms, columns=doc_index)
 
-    weights_df = pd.DataFrame({'term': vectorizer.get_feature_names(), 'weight': weights})
 
-    top_features = weights_df.sort_values(by='weight', ascending=False).head(top_n)['term'].tolist()
+    #     	          0 	 1 	     2 	        3 	     4        	5          6         7 	     8 	     9
+    # context 	     0.0 	0.0 	0.0 	1.507414 	0.0 	1.507414 	0.706484 	0.0 	0.0 	0.0
+    # prevent 	     0.0 	0.0 	0.0 	0.000000 	0.0 	0.000000 	0.914903 	0.0 	0.0 	0.0
+    # altogether 	 0.0 	0.0 	0.0 	0.000000 	0.0 	0.000000 	0.000000 	0.0 	0.0 	0.0
 
-    return top_features
+    return inv_idx
+
+
+
+def get_tfidf_bert(docs, doc_index):
+
+    docs_norm = normalize_corpus(docs, lemmatize=False,
+                     only_text_chars=True,
+                     tokenize=False, sort_text=False)
+
+    vectorizer = TfidfVectorizer(ngram_range=[4,4], max_df=1.0)
+
+    weights = vectorizer.fit_transform(docs_norm).transpose().toarray()
+    terms = vectorizer.get_feature_names()
+
+    inv_idx = pd.DataFrame(weights, index=terms, columns=doc_index)
+
+
+    #     	          0 	 1 	     2 	        3 	     4        	5          6         7 	     8 	     9
+    # context 	     0.0 	0.0 	0.0 	1.507414 	0.0 	1.507414 	0.706484 	0.0 	0.0 	0.0
+    # prevent 	     0.0 	0.0 	0.0 	0.000000 	0.0 	0.000000 	0.914903 	0.0 	0.0 	0.0
+    # altogether 	 0.0 	0.0 	0.0 	0.000000 	0.0 	0.000000 	0.000000 	0.0 	0.0 	0.0
+
+    return inv_idx
+
+
+def get_bm25(docs, doc_index):
+
+    docs_norm = normalize_corpus(docs, lemmatize=False,
+                     only_text_chars=True,
+                     tokenize=True, sort_text=False)
+
+    bm = gensim.summarization.bm25.BM25(docs_norm)
+
+    terms = {t:bm.get_scores([t]) for t in set(t for df in bm.doc_freqs for t in df.keys())}
+
+    # Build Dataframe and transpose it.
+    inv_idx = pd.DataFrame(terms).T
+
+    inv_idx.columns = doc_index
+
+    #     	          0 	 1 	     2 	        3 	     4        	5          6         7 	     8 	     9
+    # context 	     0.0 	0.0 	0.0 	1.507414 	0.0 	1.507414 	0.706484 	0.0 	0.0 	0.0
+    # prevent 	     0.0 	0.0 	0.0 	0.000000 	0.0 	0.000000 	0.914903 	0.0 	0.0 	0.0
+    # altogether 	 0.0 	0.0 	0.0 	0.000000 	0.0 	0.000000 	0.000000 	0.0 	0.0 	0.0
+
+    return inv_idx

@@ -4,46 +4,49 @@ This section of the repo allows you to build a small, 3 domain internet using Gi
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+In order to crawl a small internet of sites, we have to create it.  This tool creates 3 small sites from Wikipedia data and hosts them on Github Pages.  The sites are not linked to any other site on the internet, but are linked to each other.
+
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* Please see the requirments.txt file for a list of dependencies.
 
-### Installing
+Install with:
+```
+pip install -r requirements.txt
+```
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
+1. In Github, create three organizations under your user account.
+2. Update `sg_gh_user` in `config.py` with your Github username.
+3. Once creates, edit the `config.py` file below, with a topic (broader topics will work better) and the *exact* organization name (org_name) from Github, for each separate site.
+4. Run `python site_generator.py` and follow the prompts.  Note: This has not been fully tests with Github 2-factor authentication.
 
-## Help
-
-Any advise for common problems or issues.
 ```
-command to run if program contains helper info
+sg_sites = [
+            {'topic': 'python software', 'org_name': 'python-software'},
+            {'topic': 'data science', 'org_name': 'data-science-blog'},
+            {'topic': 'search engine optimization', 'org_name': 'search-engine-optimization-blog'}
+           ]
 ```
 
 ## Authors
 
 Contributors names and contact info
 
-ex. JR Oakes
-ex. [@jroakes](https://twitter.com/jroakes)
+JR Oakes
+[@jroakes](https://twitter.com/jroakes)
+
 
 ## Version History
 
-* 0.1
+* 0.1 - Alpha
     * Initial Release
+
 
 ## License
 
@@ -52,4 +55,4 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 ## Acknowledgments
 
 Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
+* [ghPublish](https://github.com/oxalorg/ghPublish)

@@ -3,7 +3,7 @@
 
 Build a small, 3 domain internet using Github pages and Wikipedia and construct a crawler to crawl, render, and index.
 
-![TechSEO Screenshot](https://raw.githubusercontent.com/jroakes/screaming-frog-shingling/blob/master/etc/images/screenshot.png "TechSEO Screenshot")
+![TechSEO Screenshot](https://raw.githubusercontent.com/jroakes/tech-seo-boost/master/etc/images/screenshot.png "TechSEO Screenshot")
 
 Get the repo [locomotive.agency/coal-crawler-renderer-indexer-caboose](https://locomotive.agency/coal-crawler-renderer-indexer-caboose)
 

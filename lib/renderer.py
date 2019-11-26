@@ -53,7 +53,13 @@ asyncio.get_event_loop().run_until_complete(main())
 import asyncio
 import threading
 import nest_asyncio
-nest_asyncio.apply()
+
+try:
+    get_ipython().config
+    nest_asyncio.apply()
+except NameError:
+    pass
+    
 from pyppeteer import launch
 
 

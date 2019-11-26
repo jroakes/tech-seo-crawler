@@ -106,3 +106,4 @@ venv.bak/
 apicache-py3/
 *.ctrl
 *.lwp
+*.pkl

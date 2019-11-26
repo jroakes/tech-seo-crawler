@@ -15,7 +15,7 @@ This tool attempts to implement a small ecosystem of 3 websites, along with a si
 
 #### Parts:
 * PageRank
-* Chrome Hadless Rendering
+* Chrome Headless Rendering
 * Text NLP Normalization
 * Bert Embeddings
 * Robots
@@ -68,9 +68,25 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
+### Libraries
 * [ghPublish](https://github.com/oxalorg/ghPublish)
+* [pandas](https://github.com/pandas-dev/pandas) # What would we all do without Pandas?
 * [gensim](https://github.com/RaRe-Technologies/gensim)
 * [pyppeteer](https://github.com/miyakogi/pyppeteer)
 * [scikit-learn](https://github.com/scikit-learn/scikit-learn)
+* [streamlit](https://github.com/streamlit/streamlit)
 * [DIP](https://github.com/dipanjanS)
+
+### Topics
+* https://github.com/kish1/PoliteCrawler/blob/master/polite_crawler.py
+* https://bitbucket.org/mchaput/whoosh/src/default/
+* https://www.ijarcce.com/upload/2016/january-16/IJARCCE%2052.pdf
+* https://www.seltzer.com/margo/publications
+* https://github.com/sidco0014/Search-Engine
+* https://github.com/valerio94w/ADM-Hw3-Group4
+* https://github.com/rw1993/hupubxj_search
+* https://github.com/mitishagd/Information-Retrieval-System
+* https://medium.com/startup-grind/what-every-software-engineer-should-know-about-search-27d1df99f80d
+* http://web.stanford.edu/class/cs276/
+* https://github.com/wuyi1405/brianspiering-nlp-course
+* https://www.cs.toronto.edu/~muuo/blog/build-yourself-a-mini-search-engine/

@@ -62,7 +62,7 @@ class Crawler():
             if rel.lower() == 'nofollow':
                 continue
 
-            if not check_robots_txt(get_robots(url), href):
+            if not check_robots_txt(get_robots(href), href):
                 continue
 
             self.update_linktext(href, text)
@@ -223,7 +223,6 @@ class Indexer():
         self.doc_index = pd.merge(self.doc_index, self.pr_index, left_index=True, right_index=True)
 
 
-
     def build_bert_embeddings_st(self):
 
         terms = self.bert_term_index.index.tolist()
@@ -247,9 +246,13 @@ class Indexer():
         for t in tqdm(terms, desc='Building BERT Embeddings'):
             self.bert.add_term(t)
 
-
-
     def search_index(self, search_query, **data):
+        return self._search_index(search_query, **data)[0]
+
+    def search_index_st(self, search_query, **data):
+        return self._search_index(search_query, **data)
+
+    def _search_index(self, search_query, **data):
 
         sim_weight = data.get('sim_weight', 0.7)
         pr_weight  = data.get('pr_weight', 0.7)
@@ -257,11 +260,11 @@ class Indexer():
 
         terms = normalize_corpus([search_query], lemmatize=False, only_text_chars=True, tokenize=True)[0]
 
-        doc_matches  = indexer.term_index.loc[terms].sum(axis=0)[indexer.term_index.loc[terms].sum(axis=0).gt(0)].sort_values(ascending=False)
-        pr_matches   = indexer.pr_index.loc[doc_matches.index]['score'].sort_values(ascending=False)
-        bert_terms   = indexer.bert.get_similar_df(search_query).sort_values(by='sim', ascending=False)
+        doc_matches  = self.term_index.loc[terms].sum(axis=0)[self.term_index.loc[terms].sum(axis=0).gt(0)].sort_values(ascending=False)
+        pr_matches   = self.pr_index.loc[doc_matches.index]['score'].sort_values(ascending=False)
+        bert_terms   = self.bert.get_similar_df(search_query).sort_values(by='sim', ascending=False)
         bert_terms   = bert_terms[bert_terms.sim.ge(0.8)].set_index('terms')
-        bert_matches = indexer.bert_term_index.loc[bert_terms.index.tolist()]
+        bert_matches = self.bert_term_index.loc[bert_terms.index.tolist()]
         bert_matches = bert_matches.sum(axis=0)[bert_matches.sum(axis=0).gt(0)].sort_values(ascending=False)
 
 
@@ -271,9 +274,10 @@ class Indexer():
         results.sim = results.sim * sim_weight
         results.pr = results.pr * pr_weight
         results.bert = results.bert * bert_weight
+        pre_results = results.copy()
 
         results = results.sum(axis=1).sort_values(ascending=False)
 
-        df = indexer.doc_index.loc[results.index][['title', 'url', 'description']]
+        df = self.doc_index.loc[results.index][['title', 'url', 'description']]
 
-        return df, doc_matches, pr_matches, bert_matches
+        return (df, pre_results)

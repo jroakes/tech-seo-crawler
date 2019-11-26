@@ -26,26 +26,54 @@ from engine import *
 
 import streamlit as st
 import copy
+from lib.utils import ClassStorage
 
 import config as cfg
 
-@st.cache(persist=True, suppress_st_warning=True)
+storage = ClassStorage()
+
 def crawl_data(seed):
+    fn = 'crawler.pkl'
+    loaded = storage.load_pickle(fn)
+    if loaded:
+        st.markdown('Loaded saved file.')
+        return loaded
     crawler = Crawler()
     crawler.crawl(seed)
+    storage.save_pickle(fn, crawler)
     return crawler
 
-@st.cache(persist=True, suppress_st_warning=True)
 def render_data(crawler):
-    newcrawler = copy.deepcopy(crawler)
-    newcrawler.render()
-    return newcrawler
+    fn = 'render.pkl'
+    loaded = storage.load_pickle(fn)
+    if loaded:
+        st.markdown('Loaded saved file.')
+        return loaded
+    crawler.render()
+    storage.save_pickle(fn, crawler)
+    return crawler
 
-@st.cache(persist=True, suppress_st_warning=True)
+def bert_data(indexer):
+    fn = 'bert.pkl'
+    loaded = storage.load_pickle(fn)
+    if loaded:
+        st.markdown('Loaded saved file.')
+        return loaded
+    indexer.build_bert_embeddings_st()
+    storage.save_pickle(fn, indexer.bert)
+    return indexer.bert
+
 def index_data(crawler, i_type, title_boost):
+    fn = 'indexer{i_type}_{title_boost}.pkl'.format(i_type=i_type, title_boost=title_boost)
+    loaded = storage.load_pickle(fn)
+    if loaded:
+        st.markdown('Loaded saved file.')
+        loaded.bert = bert_data(indexer)
+        return loaded
     indexer = Indexer(crawler)
     indexer.build_index(i_type=i_type, title_boost=title_boost)
-    indexer.build_bert_embeddings_st()
+    storage.save_pickle(fn, indexer)
+    indexer.bert = bert_data(indexer)
     return indexer
 
 
@@ -83,15 +111,14 @@ def main():
 
     if len(search_query):
         data = {'sim_weight':sim_weight, 'pr_weight':pr_weight, 'bert_weight':bert_weight}
-        df, doc_matches, pr_matches, bert_matches = indexer.search_index(search_query, **data)
-        st.markdown('### Document Similarity Matches')
-        st.dataframe(doc_matches)
-        st.markdown('### By PageRank')
-        st.dataframe(pr_matches)
-        st.markdown('### Bert Matches')
-        st.dataframe(bert_matches)
+        df, pre_results = indexer.search_index_st(search_query, **data)
+        st.markdown('### Ranking Data')
+        st.dataframe(pre_results, width=1000)
         st.markdown('### Search Results')
-        st.dataframe(df)
+        for i, row in df.iterrows():
+            desc = row['description'] if len(row['description']) < 280 else  row['description'][:280] + '...'
+            st.markdown('#### [{}]({}) \n {} \n {}'.format(row['title'], row['url'], row['url'], desc))
+
     else:
         st.markdown('You need to enter a search term.')
 

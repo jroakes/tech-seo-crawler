@@ -24,6 +24,8 @@
 
 from urllib.parse import urlparse, urljoin
 import hashlib
+import pickle
+import os
 
 import config as cfg
 
@@ -57,3 +59,21 @@ def url_hash(url):
     if isinstance(url, str):
         url = url.encode('utf-8')
     return hashlib.md5(url).hexdigest()
+
+
+
+class ClassStorage:
+
+    def __init__(self):
+        self.path = 'data'
+
+    def load_pickle(self, fn):
+        fn = os.path.join(self.path, fn)
+        if os.path.exists(fn):
+            return pickle.load(open(fn,'rb'))
+        else:
+            return None
+
+    def save_pickle(self, fn, cls):
+        fn = os.path.join(self.path, fn)
+        pickle.dump(cls, open(fn,'wb'))

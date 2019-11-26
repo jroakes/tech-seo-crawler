@@ -274,7 +274,7 @@ class Indexer():
         results.sim = results.sim * sim_weight
         results.pr = results.pr * pr_weight
         results.bert = results.bert * bert_weight
-        pre_results = results.copy()
+        pre_results = results.copy().fillna(0)
 
         results = results.sum(axis=1).sort_values(ascending=False)
 

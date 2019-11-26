@@ -87,9 +87,9 @@ sg_gh_user = 'jroakes-locomotive'
 # Dictonary of your sites where `topic` is the name of the topic to search Wikipedia for, \
 # and org_name is the EXACT name of the Github Organizations you created.
 sg_sites = [
-            {'topic': 'python software', 'org_name': 'python-software'},
-            {'topic': 'data science', 'org_name': 'data-science-blog'},
-            {'topic': 'search engine optimization', 'org_name': 'search-engine-optimization-blog'}
+            {'topic': 'python software', 'org_name': 'python-software'}, # python-software.github.io
+            {'topic': 'data science', 'org_name': 'data-science-blog'},  # data-science-blog.github.io
+            {'topic': 'search engine optimization', 'org_name': 'search-engine-optimization-blog'} # search-engine-optimization-blog.github.io
            ]
 
 

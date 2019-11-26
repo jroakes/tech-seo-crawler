@@ -56,9 +56,9 @@ class BERT:
 
 
     def add_terms(self, texts):
-        
+
         for t in texts:
-            add_term(t)
+            self.add_term(t)
 
 
     def add_term(self, text):

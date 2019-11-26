@@ -36,28 +36,30 @@ def crawl_data(seed):
     fn = 'crawler.pkl'
     loaded = storage.load_pickle(fn)
     if loaded:
-        st.markdown('Loaded saved file.')
+        st.markdown('Loaded saved Crawl file.')
         return loaded
     crawler = Crawler()
     crawler.crawl(seed)
     storage.save_pickle(fn, crawler)
+    st.markdown('Crawling Complete')
     return crawler
 
 def render_data(crawler):
     fn = 'render.pkl'
     loaded = storage.load_pickle(fn)
     if loaded:
-        st.markdown('Loaded saved file.')
+        st.markdown('Loaded saved Render file.')
         return loaded
     crawler.render()
     storage.save_pickle(fn, crawler)
+    st.markdown('Rendering Complete')
     return crawler
 
 def bert_data(indexer):
     fn = 'bert.pkl'
     loaded = storage.load_pickle(fn)
     if loaded:
-        st.markdown('Loaded saved file.')
+        st.markdown('Loaded saved BERT file.')
         return loaded
     indexer.build_bert_embeddings_st()
     storage.save_pickle(fn, indexer.bert)
@@ -67,13 +69,14 @@ def index_data(crawler, i_type, title_boost):
     fn = 'indexer{i_type}_{title_boost}.pkl'.format(i_type=i_type, title_boost=title_boost)
     loaded = storage.load_pickle(fn)
     if loaded:
-        st.markdown('Loaded saved file.')
-        loaded.bert = bert_data(indexer)
+        st.markdown('Loaded saved Indexer file.')
+        loaded.bert = bert_data(loaded)
         return loaded
     indexer = Indexer(crawler)
     indexer.build_index(i_type=i_type, title_boost=title_boost)
     storage.save_pickle(fn, indexer)
     indexer.bert = bert_data(indexer)
+    st.markdown('Indexing Complete')
     return indexer
 
 
@@ -95,29 +98,27 @@ def main():
     st.markdown('## Crawling')
     # Crawling (First Wave)
     crawler = crawl_data(cfg.crawler_seed)
-    st.markdown('Crawling Complete')
 
     st.markdown('## Rendering')
     # Rendering (Second Wave)
     crawler = render_data(crawler)
-    st.markdown('Rendering Complete')
 
     st.markdown('## Indexing')
     # Build the index
     indexer = index_data(crawler, i_type, title_boost)
-    st.markdown('Indexing Complete')
 
-    st.markdown('## Searching: {}'.format(search_query))
+    st.markdown('# Searching: {}'.format(search_query))
 
     if len(search_query):
         data = {'sim_weight':sim_weight, 'pr_weight':pr_weight, 'bert_weight':bert_weight}
         df, pre_results = indexer.search_index_st(search_query, **data)
-        st.markdown('### Ranking Data')
-        st.dataframe(pre_results, width=1000)
-        st.markdown('### Search Results')
+        st.markdown('## Ranking Data')
+        st.dataframe(pre_results.style.highlight_max(axis=0), width=800)
+        st.markdown('## Search Results')
+        st.markdown('#### \[Ad\] [{}]({}) \n {}  \n  {}'.format( 'LOCOMOTIVE® - Enterprise Technical SEO Agency', 'https://locomotive.agency/', 'https://locomotive.agency/', "LOCOMOTIVE® - 2019 U.S. Search Awards 'Best Small SEO Agency'. We are an agency team of enterprise technical, and on-page SEO specialists: Moving you forward."))
         for i, row in df.iterrows():
             desc = row['description'] if len(row['description']) < 280 else  row['description'][:280] + '...'
-            st.markdown('#### [{}]({}) \n {} \n {}'.format(row['title'], row['url'], row['url'], desc))
+            st.markdown('#### [{}]({}) \n {}  \n  {}'.format(row['title'], row['url'], row['url'], desc))
 
     else:
         st.markdown('You need to enter a search term.')

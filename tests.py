@@ -67,15 +67,16 @@ assert hashdb.get_similar(content2, threshold=0.9) == ['content2']
 with open("files/demo.html", "r") as f:
     html = f.read()
 renderer = RenderHTML(html=html)
+
 assert renderer.render() == {'title': ['Example Domain'], 'description': [], 'h1': ['Example Domain'], 'h2': [], 'links': [{'href': 'https://www.iana.org/domains/example', 'text': 'More information...', 'rel': ''}], 'images': [], 'canonical': [], 'robots': [], 'content': 'Example Domain This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission. More information...'}
 assert renderer.extract_content() == 'Example Domain This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission. More information...'
-assert renderer.extract_links() == ['https://www.iana.org/domains/example']
+assert renderer.extract_links() == [{'href': 'https://www.iana.org/domains/example', 'text': 'More information...', 'rel': ''}]
 
 
 # Crawling
 info = crawl_url('http://example.com/')
 assert info['meta']['robots'] == []
-assert info['meta']['canonical'] == 'http://example.com/'
+assert info['meta']['canonical'] == None
 assert info['domain'] == 'example.com'
 assert info['title'] == 'Example Domain'
 
@@ -96,7 +97,7 @@ for i,t in enumerate(queries):
 url_list = ['urla', 'urlb', 'urlc', 'urld', 'urle']
 link_tuples = [('urla','urlb'), ('urlc','urlb'), ('urla','urle'), ('urle','urla'), ('urlc','urlb'), ('urld','urle'), ('urle','urlb')]
 
-pr_valid = {'url': {0: 'urlb', 1: 'urle', 2: 'urla', 3: 'urld', 4: 'urlc'}, 'score': {0: 0.3625498007448575, 1: 0.2544205750109898, 2: 0.19976269190396267, 3: 0.09163346617009499, 4: 0.09163346617009499}}
+pr_valid = {'score': {'urlb': 0.3625498007448575, 'urle': 0.2544205750109898, 'urla': 0.19976269190396267, 'urld': 0.09163346617009499, 'urlc': 0.09163346617009499}}
 df = build_pagerank_df(url_list, link_tuples)
 assert df.to_dict() == pr_valid
 

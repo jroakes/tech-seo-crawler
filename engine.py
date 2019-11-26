@@ -242,7 +242,8 @@ class Indexer():
 
 
     def build_bert_embeddings(self):
-        from tqdm import tqdm_notebook as tqdm
+        from tqdm import tqdm
+        terms = self.bert_term_index.index.tolist()
         for t in tqdm(terms, desc='Building BERT Embeddings'):
             self.bert.add_term(t)
 

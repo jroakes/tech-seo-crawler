@@ -31,6 +31,10 @@ from torch import nn
 import transformers
 from transformers import BertTokenizer, BertModel, DistilBertTokenizer, DistilBertModel
 
+import logging
+logging.getLogger("transformers.modeling_utils").setLevel(logging.WARN)
+logging.getLogger("transformers.configuration_utils").setLevel(logging.WARN)
+
 class BERT:
 
     def __init__(self, dims = None):

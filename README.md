@@ -75,7 +75,7 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 * [pyppeteer](https://github.com/miyakogi/pyppeteer)
 * [scikit-learn](https://github.com/scikit-learn/scikit-learn)
 * [streamlit](https://github.com/streamlit/streamlit)
-* [DIP](https://github.com/dipanjanS)
+* [DIP](https://github.com/dipanjanS) # I don't know who you are, but thanks for my go-to text normalization pipeline.
 
 ### Topics
 * https://github.com/kish1/PoliteCrawler/blob/master/polite_crawler.py

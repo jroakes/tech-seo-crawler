@@ -31,7 +31,7 @@ This tool attempts to implement a small ecosystem of 3 websites, along with a si
 
 ### Dependencies
 
-* Please see the requirments.txt file for a list of dependencies.
+* Please see the requirements.txt file for a list of dependencies.
 
 It is strongly suggested to do the following, first, in a new, clean environment.
 

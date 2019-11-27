@@ -36,7 +36,11 @@ from nltk.stem import WordNetLemmatizer
 from html.parser import HTMLParser
 import unicodedata
 
-stopword_list = nltk.corpus.stopwords.words('english')
+try:
+    stopword_list = nltk.corpus.stopwords.words('english')
+except:
+    nltk.download('stopwords')
+    stopword_list = nltk.corpus.stopwords.words('english')
 
 wnl = WordNetLemmatizer()
 html_parser = HTMLParser()

@@ -37,7 +37,7 @@ sg_sites = [
            ]
 ```
 
-## Authors
+## Contributors
 
 Contributors names and contact info
 * JR Oakes [@jroakes](https://twitter.com/jroakes)

@@ -56,7 +56,7 @@ pip install -r requirements.txt
 * When running in streamlit we experienced a few connection closed errors during the Rendering process. If you experience this error just rerun the script by using the top right menu and clicking on rerun in streamlit.
 
 
-## Authors
+## Contributors
 
 Contributors names and contact info
 * JR Oakes [@jroakes](https://twitter.com/jroakes)

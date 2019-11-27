@@ -22,6 +22,9 @@ pip install -r requirements.txt
 ### Executing program
 
 1. In Github, create three organizations under your user account.
+* To do this go to the plus sign next to your profile photo at the top right. 
+* Select the plan you want to use. Using the free Open Source plan should work fine.
+* Name your organization, add email and select My personal account.
 2. Update `sg_gh_user` in `config.py` with your Github username.
 3. Once creates, edit the `config.py` file below, with a topic (broader topics will work better) and the *exact* organization name (org_name) from Github, for each separate site.
 4. Run `python site_generator.py` and follow the prompts.  Note: This has not been fully tests with Github 2-factor authentication.

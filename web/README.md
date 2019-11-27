@@ -22,7 +22,7 @@ pip install -r requirements.txt
 ### Executing program
 
 1. In Github, create three organizations under your user account.
-* To do this go to the plus sign next to your profile photo at the top right. 
+* To do this go to the plus sign next to your profile photo at the top right.
 * Select the plan you want to use. Using the free Open Source plan should work fine.
 * Name your organization, add email and select My personal account.
 2. Update `sg_gh_user` in `config.py` with your Github username.
@@ -40,9 +40,8 @@ sg_sites = [
 ## Authors
 
 Contributors names and contact info
-
-JR Oakes
-[@jroakes](https://twitter.com/jroakes)
+* JR Oakes [@jroakes](https://twitter.com/jroakes)
+* Robert Padgett [@robertcpadgett](https://twitter.com/robertcpadgett)
 
 
 ## Version History

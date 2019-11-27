@@ -59,9 +59,8 @@ pip install -r requirements.txt
 ## Authors
 
 Contributors names and contact info
-
-JR Oakes
-[@jroakes](https://twitter.com/jroakes)
+* JR Oakes [@jroakes](https://twitter.com/jroakes)
+* Robert Padgett [@robertcpadgett](https://twitter.com/robertcpadgett)
 
 
 ## Version History

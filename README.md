@@ -47,6 +47,7 @@ pip install -r requirements.txt
 
 ### Executing program
 
+* Make sure you've created your three sites first. See README file in the web folder.
 * Run `streamlit run main.py` in the terminal or command prompt.  A new Browser window should open.
 * The tool can also be run interactively with the `Run.ipynb` notebook in Jupyter.
 

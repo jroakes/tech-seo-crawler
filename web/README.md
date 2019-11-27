@@ -27,7 +27,7 @@ pip install -r requirements.txt
 * Name your organization, add email and select My personal account.
 2. Update `sg_gh_user` in `config.py` with your Github username.
 3. Once created, edit the `config.py` file below, with a topic (broader topics will work better) and the *exact* organization name (org_name) from Github, for each separate site.
-4. Run `python site_generator.py` and follow the prompts.  Note: This has not been fully tested with Github 2-factor authentication.
+4. Run `python web/site_generator.py` and follow the prompts.  Note: This has not been fully tested with Github 2-factor authentication.
 
 ```
 sg_sites = [

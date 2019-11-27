@@ -11,3 +11,9 @@ pattern
 reppy
 networkx
 tqdm
+bs4
+nest-asyncio
+pywikibot
+scikit-learn
+streamlit
+ghPublish

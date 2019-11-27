@@ -27,6 +27,10 @@ This tool attempts to implement a small ecosystem of 3 websites, along with a si
 * Document Frequency Functions (BM25 and TFIDF)
 
 
+Made for a presentation at [Tech SEO Boost](https://www.catalystdigital.com/techseoboost/)
+
+
+
 ## Getting Started
 
 ### Dependencies
@@ -37,7 +41,7 @@ It is strongly suggested to do the following, first, in a new, clean environment
 
 * May need to install [Microsoft Build Tools] (http://go.microsoft.com/fwlink/?LinkId=691126&fixForIE=.exe.) and upgrade setup tools  `pip install --upgrade setuptools` if you are on Windows.
 * Install PyTorch `pip install torch==1.3.1+cpu -f https://download.pytorch.org/whl/torch_stable.html`
-* See requirements.txt file for remaining requirements.  Normally installed with ```pip install -r requirements.txt```. To install the frozen requirments this was developed with, use ```pip install -r requirements-frozen.txt```
+* See requirements.txt file for remaining requirements.  Normally installed with ```pip install -r requirements.txt```. To install the frozen requirements this was developed with, use ```pip install -r requirements-frozen.txt```
 
 Install with:
 ```
@@ -47,10 +51,10 @@ pip install -r requirements.txt
 
 ### Executing program
 
-* Make sure you've created your three sites first. See README file in the web folder.
-* After creating your three sites, go to the config file and add the crawler_seed URL. This will be the organization name you created on github.io. For example: myorganization.github.io/
-* Run `streamlit run main.py` in the terminal or command prompt.  A new Browser window should open.
-* The tool can also be run interactively with the `Run.ipynb` notebook in Jupyter.
+1. Make sure you've created your three sites first. See README file in the web folder. Conversely, if you just want to use the crawler/renderer, you can run with the premade sites and skip to step 3.
+2. After creating your three sites, go to the config file and add the crawler_seed URL. This will be the organization name you created on github.io. For example: myorganization.github.io/
+3. Run `streamlit run main.py` in the terminal or command prompt.  A new Browser window should open.
+4. The tool can also be run interactively with the `Run.ipynb` notebook in Jupyter.
 
 ## Troubleshooting
 * When running in streamlit we experienced a few connection closed errors during the Rendering process. If you experience this error just rerun the script by using the top right menu and clicking on rerun in streamlit.

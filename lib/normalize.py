@@ -37,10 +37,17 @@ from html.parser import HTMLParser
 import unicodedata
 
 try:
-    stopword_list = nltk.corpus.stopwords.words('english')
-except:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
     nltk.download('stopwords')
-    stopword_list = nltk.corpus.stopwords.words('english')
+
+
+stopword_list = nltk.corpus.stopwords.words('english')
 
 wnl = WordNetLemmatizer()
 html_parser = HTMLParser()

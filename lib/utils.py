@@ -22,6 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import re
 from urllib.parse import urlparse, urljoin
 import hashlib
 import pickle
@@ -60,7 +61,10 @@ def url_hash(url):
         url = url.encode('utf-8')
     return hashlib.md5(url).hexdigest()
 
-
+def abs_src(html, url):
+    temp = lambda m: ' src="' + urljoin(url, m.group(1)) + '"'
+    html = re.sub(r' src\s*=\s*"([^"]+)"', temp, html)
+    return html
 
 class ClassStorage:
 

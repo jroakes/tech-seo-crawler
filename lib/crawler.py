@@ -64,6 +64,8 @@ def crawl_url(url):
     g = Goose({'browser_user_agent': cfg.browser_user_agent, 'parser_class':'soup'})
     r = g.fetcher.fetch_obj(url)
     html = r.content.decode('utf-8').strip()
+    # Make src urls absolute
+    html = abs_src(html, r.url)
     page = g.extract(raw_html=html)
     infos = page.infos
 

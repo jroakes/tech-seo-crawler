@@ -25,6 +25,7 @@
 from lib import *
 import pandas as pd
 import streamlit as st
+import time
 
 import config as cfg
 
@@ -125,6 +126,8 @@ class Crawler():
                     valid_urls = self.parse_links(new_links, doc_hash)
                     self.frontier.enqueue(valid_urls)
 
+                time.sleep(cfg.wait_per_request)
+
 
 
     def render(self):
@@ -154,6 +157,8 @@ class Crawler():
             doc_hash = self.urllookup.update_canonical( doc_hash, canonical=html_data['canonical'][0])
 
             self.doc_index[doc_hash] = doc_data
+
+            time.sleep(cfg.wait_per_request)
 
 
 

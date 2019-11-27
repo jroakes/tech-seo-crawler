@@ -30,7 +30,7 @@
 browser_user_agent = "Googlebot"
 
 # How quickly we crawl a website.
-per_sec_crawl_rate = 1
+wait_per_request = 1
 
 # Where to start crawling
 crawler_seed = 'https://data-science-blog.github.io/Customer-Data-Platform/'

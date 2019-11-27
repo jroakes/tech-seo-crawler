@@ -54,12 +54,14 @@ import asyncio
 import threading
 import nest_asyncio
 
+import config as cfg
+
 try:
     get_ipython().config
     nest_asyncio.apply()
 except NameError:
     pass
-    
+
 from pyppeteer import launch
 
 
@@ -97,6 +99,7 @@ class RenderHTML():
                                )
         context = await browser.createIncognitoBrowserContext()
         self.page = await browser.newPage()
+        await self.page.setUserAgent(cfg.browser_user_agent)
 
     def render(self,  html=None):
         html = self.html_set(html)

@@ -81,7 +81,7 @@ pyrsistent==0.15.5
 python-dateutil==2.8.0
 python-docx==0.8.10
 pytz==2019.3
-pywikibot==3.0.dev0
+pywikibot==3.0.20190722
 pywin32==223
 pywinpty==0.5.5
 PyYAML==5.1.2

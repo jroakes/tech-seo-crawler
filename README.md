@@ -53,8 +53,8 @@ pip install -r requirements.txt
 * The tool can also be run interactively with the `Run.ipynb` notebook in Jupyter.
 
 ## Troubleshooting
-* When running in streamlit we experienced a few connection closed errors during the Rendering process. If you experience this error just rerun the script by using the top right menu and clicking on rerun.
-* 
+* When running in streamlit we experienced a few connection closed errors during the Rendering process. If you experience this error just rerun the script by using the top right menu and clicking on rerun in streamlit.
+
 
 ## Authors
 

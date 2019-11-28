@@ -62,6 +62,7 @@ try:
 except NameError:
     pass
 
+from pyppeteer.errors import NetworkError
 from pyppeteer import launch
 
 
@@ -103,7 +104,14 @@ class RenderHTML():
 
     def render(self,  html=None):
         html = self.html_set(html)
-        return asyncio.get_event_loop().run_until_complete(self._render(html))
+
+        # Multiple tries (3)
+        for _ in range(3):
+            try:
+                return asyncio.get_event_loop().run_until_complete(self._render(html))
+            except NetworkError:
+                asyncio.set_event_loop(asyncio.new_event_loop())
+                asyncio.get_event_loop().run_until_complete(self.build_page())
 
     async def _render(self, html):
         await self.page.setContent(html)

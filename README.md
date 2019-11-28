@@ -56,6 +56,29 @@ pip install -r requirements.txt
 3. Run `streamlit run main.py` in the terminal or command prompt.  A new Browser window should open.
 4. The tool can also be run interactively with the `Run.ipynb` notebook in Jupyter.
 
+
+### Sharing
+If you want to share your search engine for others to see, you can use Streamlit and Localtunnel.
+1. Install Localtunnel `npm install -g localtunnel`
+2. Start the tunnel with `lt --port 80 --subdomain <create a unique sub-domain name>`
+3. Start the Streamlit server with `streamlit run main.py --server.port 80 --global.logLevel 'warning' --server.headless true --server.enableCORS false --browser.serverAddress <the unique subdomain from step 2>.localtunnel.me`
+4. Navigate to `https://<the unique subdomain from step 2>.localtunnel.me` in your browser, or share the link with a friend.
+
+#### Complete example:
+In a new terminal:
+```
+npm install -g localtunnel
+lt --port 80 --subdomain tech-seo-crawler
+```
+
+In another terminal:
+```
+cd /tech-seo-crawler/
+activate techseo
+streamlit run main.py --server.port 80 --global.logLevel 'warning' --server.headless true --server.enableCORS false --browser.serverAddress tech-seo-crawler.localtunnel.me
+```
+
+
 ## Troubleshooting
 * When running in streamlit we experienced a few connection closed errors during the Rendering process. If you experience this error just rerun the script by using the top right menu and clicking on rerun in streamlit.
 

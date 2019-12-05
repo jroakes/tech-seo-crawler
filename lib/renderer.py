@@ -93,7 +93,7 @@ class RenderHTML():
             raise HTMLMissing('html is not set. Please run class.set_html(html) or pass the named `html` parameter to this function. ')
 
     async def build_page(self):
-        browser = await launch( { args: ['--no-sandbox'] },
+        browser = await launch( args=['--no-sandbox'],
                                 handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False

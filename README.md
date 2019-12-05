@@ -33,6 +33,12 @@ Made for a presentation at [Tech SEO Boost](https://www.catalystdigital.com/tech
 
 ## Getting Started
 
+### Get the repo
+```
+git clone https://github.com/jroakes/tech-seo-crawler.git
+```
+
+
 ### Dependencies
 
 * Please see the requirements.txt file for a list of dependencies.

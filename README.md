@@ -5,7 +5,8 @@ Build a small, 3 domain internet using Github pages and Wikipedia and construct 
 
 ![TechSEO Screenshot](https://raw.githubusercontent.com/jroakes/tech-seo-crawler/master/etc/images/screenshot.png "TechSEO Screenshot")
 
-Play with the results here: [Simple Search Engine](http://ec2-34-233-22-11.compute-1.amazonaws.com:8501) **Please Note**: This is hosted on a small AWS box, so if you have issues loading, try again later.
+Play with the results here: [Simple Search Engine](http://ec2-34-233-22-11.compute-1.amazonaws.com:8501) 
+**Please Note**: This is hosted on a small AWS box, so if you have issues loading, try again later.
 
 Slideshare is here: [Building a Simple Crawler on a Toy Internet](https://www.slideshare.net/jroakes/building-a-simple-crawler-on-a-toy-internet)
 

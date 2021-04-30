@@ -115,7 +115,7 @@ tqdm==4.38.0
 traitlets==4.3.3
 transformers==2.1.1
 tzlocal==2.0.0
-urllib3==1.25.6
+urllib3==1.25.8
 validators==0.14.0
 watchdog==0.9.0
 wcwidth==0.1.7

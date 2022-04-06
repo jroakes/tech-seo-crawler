@@ -59,7 +59,7 @@ nbformat==4.4.0
 nest-asyncio==1.2.0
 networkx==2.4
 nltk==3.4.5
-notebook==6.0.2
+notebook==6.4.10
 numpy==1.17.3
 pandas==0.25.3
 pandocfilters==1.4.2

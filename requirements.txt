@@ -54,7 +54,7 @@ mistune==0.8.4
 mmh3==2.5.1
 more-itertools==7.2.0
 mysqlclient==1.4.5
-nbconvert==5.6.1
+nbconvert==6.3.0
 nbformat==4.4.0
 nest-asyncio==1.2.0
 networkx==2.4

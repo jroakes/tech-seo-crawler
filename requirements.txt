@@ -84,7 +84,7 @@ pytz==2019.3
 pywikibot==3.0.20190722
 # pywin32==223
 # pywinpty==0.5.5
-PyYAML==5.1.2
+PyYAML==5.4
 pyzmq==18.1.0
 regex==2019.11.1
 reppy==0.4.14
